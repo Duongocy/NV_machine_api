@@ -45,7 +45,7 @@ app.get('/Invoice', async (req, res) => {
             res.json(result.rows);
         } catch (err) {
             console.error(err);
-            res.status(500).send('Lỗi khi lấy dữ liệu nha');
+            res.status(500).send('Lỗi khi lấy dữ liệu nha nha');
         }
     }    
 });
