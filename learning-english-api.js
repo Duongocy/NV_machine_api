@@ -6,6 +6,14 @@ const cron = require('node-cron');
 
 const app = express();
 app.use(cors()); // Sử dụng middleware CORS
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+// Handle preflight request (OPTIONS)
+app.options('*', cors());
 app.use(express.json());
 
 // Cấu hình kết nối đến PostgreSQL
