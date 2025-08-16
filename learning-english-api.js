@@ -51,7 +51,7 @@ app.get('/Invoice', async (req, res) => {
 });
 app.post('/Invoice', async (req, res) => {
     const new_lesson_list = req.body;
-    console.log("Đã nhận được yêu cầu từ client");//báo trên log là đã nhận được 1 yêu cầu từ client
+    console.log("Đã nhận được yêu cầu lưu lesson list ",new_lesson_list);//báo trên log là đã nhận được 1 yêu cầu từ client
     // console.log(product_name,price,quantity);
     try {
         // const invoiceId = product_array[0].invoice_id; // Lấy invoice_id từ phần tử đầu
@@ -61,7 +61,8 @@ app.post('/Invoice', async (req, res) => {
         //     [invoiceId]
         // );
         results = [];
-        for (lesson of new_lesson_list) {
+        let lessons = Array.isArray(new_lesson_list) ? new_lesson_list : [new_lesson_list];
+        for (let lesson of lessons) {
             const { lesson_id,lesson_no,lesson_title,submit_date,user_id } = lesson;
             const result = await pool.query(
                 'INSERT INTO speaking_lessons (lesson_id,lesson_no,lesson_title,submit_date,user_id) VALUES ($1, $2, $3,$4,$5) RETURNING *',
