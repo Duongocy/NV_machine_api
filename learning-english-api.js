@@ -62,6 +62,7 @@ app.post('/Invoice', async (req, res) => {
         // );
         results = [];
         let lessons = Array.isArray(new_lesson_list) ? new_lesson_list : [new_lesson_list];
+        console.log(lessons);
         for (let lesson of lessons) {
             const { lesson_id,lesson_no,lesson_title,submit_date,user_id } = lesson;
             const result = await pool.query(
