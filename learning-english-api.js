@@ -49,7 +49,33 @@ app.get('/Invoice', async (req, res) => {
         }
     }    
 });
-
+app.post('/Invoice', async (req, res) => {
+    const new_lesson_list = req.body;
+    console.log("Đã nhận được yêu cầu từ client");//báo trên log là đã nhận được 1 yêu cầu từ client
+    // console.log(product_name,price,quantity);
+    try {
+        // const invoiceId = product_array[0].invoice_id; // Lấy invoice_id từ phần tử đầu
+        // // Xóa các dòng dữ liệu cũ có invoice_id giống trong product_array
+        // await pool.query(
+        //     'DELETE FROM invoice_table WHERE invoice_id = $1',
+        //     [invoiceId]
+        // );
+        results = [];
+        for (lesson of new_lesson_list) {
+            const { lesson_id,lesson_no,lesson_title,submit_date,user_id } = lesson;
+            const result = await pool.query(
+                'INSERT INTO speaking_lessons (lesson_id,lesson_no,lesson_title,submit_date,user_id) VALUES ($1, $2, $3,$4,$5) RETURNING *',
+                [lesson_id,lesson_no,lesson_title,submit_date,user_id]
+            );
+            results.push(result.rows[0]); // Lưu kết quả vào mảng
+        }
+        res.status(201).json(results);//không gởi phản hồi trong vòng for vì nó sẽ kết thúc việc lưu dữ liệu ngay sau vòng lặp đầu tiên
+    }
+    catch (err) {
+        console.error(err);
+        res.status(500).send('Lỗi khi thêm dữ liệu');
+    }
+});
 // Khởi động server
 const PORT = 3003;
 app.listen(PORT, () => {
