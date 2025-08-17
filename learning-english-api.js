@@ -50,19 +50,22 @@ app.get('/Invoice', async (req, res) => {
     }    
 });
 app.post('/Invoice', async (req, res) => {
-    const new_lesson_list = req.body;
-    console.log("Đã nhận được yêu cầu lưu lesson list ",new_lesson_list);//báo trên log là đã nhận được 1 yêu cầu từ client
-    // console.log(product_name,price,quantity);
-    try {
+    const kieu_yeu_cau = req.query.yeucau;
+    if(kieu_yeu_cau==='savelesson')
+    {
+        const new_lesson_list = req.body;
+        console.log("Đã nhận được yêu cầu lưu lesson list ",new_lesson_list);//báo trên log là đã nhận được 1 yêu cầu từ client
+        // console.log(product_name,price,quantity);
+        try {
         // const invoiceId = product_array[0].invoice_id; // Lấy invoice_id từ phần tử đầu
         // // Xóa các dòng dữ liệu cũ có invoice_id giống trong product_array
         // await pool.query(
         //     'DELETE FROM invoice_table WHERE invoice_id = $1',
         //     [invoiceId]
         // );
-        results = [];
-        let lessons = Array.isArray(new_lesson_list) ? new_lesson_list : [new_lesson_list];
-        console.log(lessons);
+            results = [];
+            let lessons = Array.isArray(new_lesson_list) ? new_lesson_list : [new_lesson_list];
+            console.log(lessons);
         for (let lesson of lessons) {
             const { lesson_id,lesson_no,lesson_title,submit_date,user_id } = lesson;
             const result = await pool.query(
@@ -72,11 +75,18 @@ app.post('/Invoice', async (req, res) => {
             results.push(result.rows[0]); // Lưu kết quả vào mảng
         }
         res.status(201).json(results);//không gởi phản hồi trong vòng for vì nó sẽ kết thúc việc lưu dữ liệu ngay sau vòng lặp đầu tiên
+        }
+        catch (err) {
+            console.error(err);
+            res.status(500).send('Lỗi khi thêm dữ liệu');
+        }
     }
-    catch (err) {
-        console.error(err);
-        res.status(500).send('Lỗi khi thêm dữ liệu');
+    elseif (kieu_yeu_cau==='delete')
+    {
+        const delete_id = req.body;
+        console.log("Đã nhận được yêu cầu lưu lesson list ",delete_id);//báo trên log là đã nhận được 1 yêu cầu từ client
     }
+    
 });
 // Khởi động server
 const PORT = 3003;
