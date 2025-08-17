@@ -84,7 +84,7 @@ app.post('/Invoice', async (req, res) => {
     elseif (kieu_yeu_cau==='delete')
     {
         const delete_id = req.body;
-        console.log("Đã nhận được yêu cầu lưu lesson list ",delete_id);//báo trên log là đã nhận được 1 yêu cầu từ client
+        console.log("Đã nhận được yêu cầu xóa ");//báo trên log là đã nhận được 1 yêu cầu từ client
     }
     
 });
