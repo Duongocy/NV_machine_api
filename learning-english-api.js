@@ -97,6 +97,11 @@ app.post('/Invoice', async (req, res) => {
     }
     
 });
+app.get('/ping', (req, res) => {
+    res.send('pong!');
+    console.log('Vừa nhận tín hiệu Ping từ cron-job!');
+});
+
 // Khởi động server
 const PORT = 3003;
 app.listen(PORT, () => {
