@@ -86,7 +86,7 @@ app.post('/Invoice', async (req, res) => {
         const delete_id = req.body;
         console.log("Đã nhận được yêu cầu xóa ",delete_id.lesson_id);//báo trên log là đã nhận được 1 yêu cầu từ client
         try {
-                query_string= "DELETE FROM speaking_lesons WHERE lesson_id = '"+ delete_id.lesson_id+"'";
+                query_string= "DELETE FROM speaking_lessons WHERE lesson_id = '"+ delete_id.lesson_id+"'";
                 console.log(query_string);
                 const result = await pool.query(query_string);
                 res.json(result.rows);
