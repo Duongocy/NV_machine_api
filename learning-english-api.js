@@ -81,7 +81,7 @@ app.post('/Invoice', async (req, res) => {
             res.status(500).send('Lỗi khi thêm dữ liệu');
         }
     }
-    elseif (kieu_yeu_cau==='delete')
+    else if (kieu_yeu_cau==='delete')
     {
         const delete_id = req.body;
         console.log("Đã nhận được yêu cầu xóa ");//báo trên log là đã nhận được 1 yêu cầu từ client
