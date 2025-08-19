@@ -81,7 +81,7 @@ app.post('/Invoice', async (req, res) => {
             res.status(500).send('Lỗi khi thêm dữ liệu');
         }
     }
-    else if (kieu_yeu_cau==='delete')
+    else if (kieu_yeu_cau==='deletelesson')
     {
         const delete_id = req.body;
         console.log("Đã nhận được yêu cầu xóa ",delete_id.lesson_id);//báo trên log là đã nhận được 1 yêu cầu từ client
@@ -105,6 +105,35 @@ app.post('/Invoice', async (req, res) => {
         } catch (err) {
             console.error(err);
             res.status(500).send('Lỗi khi lấy dữ liệu nha nha');
+        }
+    }
+    else if (kieu_yeu_cau==='savewordsentence'){
+        const new_word_sentence_list = req.body;
+        console.log("Đã nhận được yêu cầu lưu word sentence list ",new_word_sentence_list);//báo trên log là đã nhận được 1 yêu cầu từ client
+        // console.log(product_name,price,quantity);
+        try {
+        // const invoiceId = product_array[0].invoice_id; // Lấy invoice_id từ phần tử đầu
+        // // Xóa các dòng dữ liệu cũ có invoice_id giống trong product_array
+        // await pool.query(
+        //     'DELETE FROM invoice_table WHERE invoice_id = $1',
+        //     [invoiceId]
+        // );
+            results = [];
+            let word_sentences = Array.isArray(new_word_sentence_list) ? new_word_sentence_list : [new_word_sentence_list];
+            console.log(word_sentences);
+        for (let word_sentence of word_sentences) {
+            const { lesson_id,word_sentence_id,word_sentence,submit_date } = word_sentence;
+            const result = await pool.query(
+                'INSERT INTO word_sentence_table (lesson_id,word_sentence_id,word_sentence,submit_date) VALUES ($1, $2, $3,$4) RETURNING *',
+                [lesson_id,word_sentence_id,word_sentence,submit_date]
+            );
+            results.push(result.rows[0]); // Lưu kết quả vào mảng
+        }
+        res.status(201).json(results);//không gởi phản hồi trong vòng for vì nó sẽ kết thúc việc lưu dữ liệu ngay sau vòng lặp đầu tiên
+        }
+        catch (err) {
+            console.error(err);
+            res.status(500).send('Lỗi khi thêm dữ liệu');
         }
     }
     
