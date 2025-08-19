@@ -47,18 +47,6 @@ app.get('/Invoice', async (req, res) => {
             console.error(err);
             res.status(500).send('Lỗi khi lấy dữ liệu nha nha');
         }
-    } 
-    else if (kieu_yeu_cau==='wordsentencelist'){
-        const lesson_id = req.body;
-        try {
-            query_string = "SELECT word_sentence_id,word_sentence FROM word_sentence_table ORDER BY word_sentence_id;"
-            console.log("Câu truy vấn : ", query_string);
-            const result = await pool.query(query_string);
-            res.json(result.rows);
-        } catch (err) {
-            console.error(err);
-            res.status(500).send('Lỗi khi lấy dữ liệu nha nha');
-        }
     }   
 });
 app.post('/Invoice', async (req, res) => {
@@ -106,6 +94,18 @@ app.post('/Invoice', async (req, res) => {
                 console.error(err);
                 res.status(500).send('Lỗi khi xóa!');
             }
+    }
+    else if (kieu_yeu_cau='wordsentencelist'){
+        const lesson_id = req.body;
+        try {
+            query_string = "SELECT word_sentence_id,word_sentence FROM word_sentence_table WHERE lesson_id = "+String(lesson_id)+" ORDER BY word_sentence_id;"
+            console.log("Câu truy vấn : ", query_string);
+            const result = await pool.query(query_string);
+            res.json(result.rows);
+        } catch (err) {
+            console.error(err);
+            res.status(500).send('Lỗi khi lấy dữ liệu nha nha');
+        }
     }
     
 });
