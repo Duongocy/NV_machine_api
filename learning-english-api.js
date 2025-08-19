@@ -135,7 +135,7 @@ app.post('/Invoice', async (req, res) => {
             res.status(500).send('Lỗi khi thêm dữ liệu');
         }
     }
-    else if (kieu_yeu_cau='deletewordsentence'){
+    else if (kieu_yeu_cau==='deletewordsentence'){
         const delete_id = req.body;
         console.log("Đã nhận được yêu cầu xóa word sentence ",delete_id.word_sentence_id);//báo trên log là đã nhận được 1 yêu cầu từ client
         try {
