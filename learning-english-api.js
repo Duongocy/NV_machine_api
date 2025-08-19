@@ -95,7 +95,7 @@ app.post('/Invoice', async (req, res) => {
                 res.status(500).send('Lỗi khi xóa!');
             }
     }
-    else if (kieu_yeu_cau='wordsentencelist'){
+    else if (kieu_yeu_cau==='wordsentencelist'){
         const lessonid = req.body;
         try {
             query_string = "SELECT word_sentence_id,word_sentence FROM word_sentence_table WHERE lesson_id = "+String(lessonid.lesson_id)+" ORDER BY word_sentence_id;"
