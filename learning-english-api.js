@@ -135,6 +135,19 @@ app.post('/Invoice', async (req, res) => {
             res.status(500).send('Lỗi khi thêm dữ liệu');
         }
     }
+    else if (kieu_yeu_cau='deletewordsentence'){
+        const delete_id = req.body;
+        console.log("Đã nhận được yêu cầu xóa word sentence ",delete_id.word_sentence_id);//báo trên log là đã nhận được 1 yêu cầu từ client
+        try {
+                query_string= "DELETE FROM word_sentence_table WHERE word_sentence_id = '"+ delete_id.word_sentence_id+"'";
+                console.log(query_string);
+                const result = await pool.query(query_string);
+                res.json(result.rows);
+            } catch (err) {
+                console.error(err);
+                res.status(500).send('Lỗi khi xóa!');
+            }
+    }
     
 });
 app.get('/ping', (req, res) => {
