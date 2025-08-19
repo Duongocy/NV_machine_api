@@ -121,10 +121,9 @@ app.post('/Invoice', async (req, res) => {
             results = [];
             let word_sentences = Array.isArray(new_word_sentence_list) ? new_word_sentence_list : [new_word_sentence_list];
             console.log(word_sentences);
-        for (let word_sentence of word_sentences) {
-            const { lesson_id,word_sentence_id,word_sentence,submit_date } = word_sentence;
-            const result = await pool.query(
-                'INSERT INTO word_sentence_table (lesson_id,word_sentence_id,word_sentence,submit_date) VALUES ($1, $2, $3,$4) RETURNING *',
+        for (let wordsentence of word_sentences) {
+            const { lesson_id,word_sentence_id,word_sentence,submit_date } = wordsentence;
+            const result = await pool.query('INSERT INTO word_sentence_table (lesson_id,word_sentence_id,word_sentence,submit_date) VALUES ($1, $2, $3,$4) RETURNING *',
                 [lesson_id,word_sentence_id,word_sentence,submit_date]
             );
             results.push(result.rows[0]); // Lưu kết quả vào mảng
