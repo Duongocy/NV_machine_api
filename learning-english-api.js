@@ -123,7 +123,7 @@ app.post('/Invoice', async (req, res) => {
             console.log(word_sentences);
         for (let wordsentence of word_sentences) {
             const { lesson_id,word_sentence_id,word_sentence,grammer,level,submit_date } = wordsentence;
-            const result = await pool.query('INSERT INTO word_sentence_table (lesson_id,word_sentence_id,word_sentence,grammer,level,submit_date) VALUES ($1, $2, $3,$4) RETURNING *',
+            const result = await pool.query('INSERT INTO word_sentence_table (lesson_id,word_sentence_id,word_sentence,grammer,level,submit_date) VALUES ($1, $2, $3,$4,$5,$6) RETURNING *',
                 [lesson_id,word_sentence_id,word_sentence,grammer,level,submit_date]
             );
             results.push(result.rows[0]); // Lưu kết quả vào mảng
