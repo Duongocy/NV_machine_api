@@ -98,7 +98,7 @@ app.post('/Invoice', async (req, res) => {
     else if (kieu_yeu_cau==='wordsentencelist'){
         const lessonid = req.body;
         try {
-            query_string = "SELECT word_sentence_id,word_sentence FROM word_sentence_table WHERE lesson_id = "+String(lessonid.lesson_id)+" ORDER BY word_sentence_id;"
+            query_string = "SELECT word_sentence_id,word_sentence,grammer,level FROM word_sentence_table WHERE lesson_id = "+String(lessonid.lesson_id)+" ORDER BY word_sentence_id;"
             console.log("Câu truy vấn : ", query_string);
             const result = await pool.query(query_string);
             res.json(result.rows);
@@ -122,9 +122,9 @@ app.post('/Invoice', async (req, res) => {
             let word_sentences = Array.isArray(new_word_sentence_list) ? new_word_sentence_list : [new_word_sentence_list];
             console.log(word_sentences);
         for (let wordsentence of word_sentences) {
-            const { lesson_id,word_sentence_id,word_sentence,submit_date } = wordsentence;
-            const result = await pool.query('INSERT INTO word_sentence_table (lesson_id,word_sentence_id,word_sentence,submit_date) VALUES ($1, $2, $3,$4) RETURNING *',
-                [lesson_id,word_sentence_id,word_sentence,submit_date]
+            const { lesson_id,word_sentence_id,word_sentence,grammer,level,submit_date } = wordsentence;
+            const result = await pool.query('INSERT INTO word_sentence_table (lesson_id,word_sentence_id,word_sentence,grammer,level,submit_date) VALUES ($1, $2, $3,$4) RETURNING *',
+                [lesson_id,word_sentence_id,word_sentence,grammer,level,submit_date]
             );
             results.push(result.rows[0]); // Lưu kết quả vào mảng
         }
