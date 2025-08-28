@@ -95,49 +95,18 @@ app.post('/Invoice', async (req, res) => {
                 res.status(500).send('Lỗi khi xóa!');
             }
     }
-    else if (kieu_yeu_cau === 'wordsentencelist') {
+    else if (kieu_yeu_cau==='wordsentencelist'){
         const lessonid = req.body;
         try {
-            const query_string = `
-            SELECT word_sentence_id, word_sentence, grammer, level
-            FROM word_sentence_table
-            WHERE lesson_id = ${lessonid.lesson_id}
-            ORDER BY word_sentence_id;
-            `;
-        console.log("Câu truy vấn : ", query_string);
-
-        const result = await pool.query(query_string);
-
-        // Duyệt qua từng row để dịch sang tiếng Việt
-        const translatedData = await Promise.all(
-            result.rows.map(async (row) => {
-            // Gọi API dịch
-            const response = await fetch("https://libretranslate.de/translate", {
-                method: "POST",
-                body: JSON.stringify({
-                q: row.word_sentence,
-                source: "en",
-                target: "vi",
-                format: "text"
-                }),
-                headers: { "Content-Type": "application/json" }
-            });
-
-            const data = await response.json();
-            return {
-                en: row.word_sentence,
-                vi: data.translatedText
-            };
-            })
-        );
-
-      res.json(translatedData);
-
-    } catch (err) {
-      console.error(err);
-      res.status(500).send('Lỗi khi lấy dữ liệu nha nha');
+            query_string = "SELECT word_sentence_id,word_sentence,grammer,level FROM word_sentence_table WHERE lesson_id = "+String(lessonid.lesson_id)+" ORDER BY word_sentence_id;"
+            console.log("Câu truy vấn : ", query_string);
+            const result = await pool.query(query_string);
+            res.json(result.rows);
+        } catch (err) {
+            console.error(err);
+            res.status(500).send('Lỗi khi lấy dữ liệu nha nha');
+        }
     }
-  }
     else if (kieu_yeu_cau==='savewordsentence'){
         const new_word_sentence_list = req.body;
         console.log("Đã nhận được yêu cầu lưu word sentence list ",new_word_sentence_list);//báo trên log là đã nhận được 1 yêu cầu từ client
