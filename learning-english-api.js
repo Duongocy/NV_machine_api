@@ -95,18 +95,55 @@ app.post('/Invoice', async (req, res) => {
                 res.status(500).send('Lỗi khi xóa!');
             }
     }
-    else if (kieu_yeu_cau==='wordsentencelist'){
+    // else if (kieu_yeu_cau==='wordsentencelist'){
+    //     const lessonid = req.body;
+    //     try {
+    //         query_string = "SELECT word_sentence_id,word_sentence,grammer,level FROM word_sentence_table WHERE lesson_id = "+String(lessonid.lesson_id)+" ORDER BY word_sentence_id;"
+    //         console.log("Câu truy vấn : ", query_string);
+    //         const result = await pool.query(query_string);
+    //         res.json(result.rows);
+    //     } catch (err) {
+    //         console.error(err);
+    //         res.status(500).send('Lỗi khi lấy dữ liệu nha nha');
+    //     }
+    // }
+    else if (kieu_yeu_cau === 'wordsentencelist') {
         const lessonid = req.body;
         try {
-            query_string = "SELECT word_sentence_id,word_sentence,grammer,level FROM word_sentence_table WHERE lesson_id = "+String(lessonid.lesson_id)+" ORDER BY word_sentence_id;"
+            const query_string = `
+            SELECT word_sentence_id, word_sentence, grammer, level
+            FROM word_sentence_table
+            WHERE lesson_id = ${lessonid.lesson_id}
+            ORDER BY word_sentence_id;
+            `;
             console.log("Câu truy vấn : ", query_string);
+
             const result = await pool.query(query_string);
+
+            // Lấy tất cả câu tiếng Anh
+            const sentences = result.rows.map(r => r.word_sentence);
+            const text = sentences.join("\n"); // gom lại thành 1 chuỗi
+
+            // Gọi Google Translate (GET request)
+            const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=vi&dt=t&q=${encodeURIComponent(text)}`;
+            const response = await fetch(url);
+            const data = await response.json();
+
+            // data[0] chứa mảng kết quả theo từng dòng
+            const translations = data[0].map(item => item[0]);
+
+            // Thêm field "vi" vào từng row tương ứng
+            result.rows.forEach((row, i) => {
+            row.vi = translations[i] || "";
+            });
+
             res.json(result.rows);
+
         } catch (err) {
             console.error(err);
             res.status(500).send('Lỗi khi lấy dữ liệu nha nha');
         }
-    }
+        }
     else if (kieu_yeu_cau==='savewordsentence'){
         const new_word_sentence_list = req.body;
         console.log("Đã nhận được yêu cầu lưu word sentence list ",new_word_sentence_list);//báo trên log là đã nhận được 1 yêu cầu từ client
