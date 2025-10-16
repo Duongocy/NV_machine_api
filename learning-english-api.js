@@ -37,6 +37,7 @@ app.get('/Invoice', async (req, res) => {
     let kieu_yeu_cau = req.query.yeucau;//Lấy giá trị thuột tính type của request từ client gán cho biến type
     console.log("Vừa nhận được yêu cầu từ client");//báo trên log là đã nhận được 1 yêu cầu từ client
     console.log("Kiểu yêu cầu : ", kieu_yeu_cau);
+    console.log("Topic : ",topic);
     if (kieu_yeu_cau === 'lessonlist') {
         try {
             query_string = "SELECT user_id,lesson_id,lesson_title,lesson_no,submit_date FROM speaking_lessons ORDER BY lesson_title;"
