@@ -35,6 +35,7 @@ app.get('/Invoice', async (req, res) => {
     // });
     //thực hiện công việc cần khi đã xác thực token ok 
     let kieu_yeu_cau = req.query.yeucau;//Lấy giá trị thuột tính type của request từ client gán cho biến type
+    let topic = req.query.topic;
     console.log("Vừa nhận được yêu cầu từ client");//báo trên log là đã nhận được 1 yêu cầu từ client
     console.log("Kiểu yêu cầu : ", kieu_yeu_cau);
     console.log("Topic : ",topic);
