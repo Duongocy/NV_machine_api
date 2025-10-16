@@ -41,7 +41,7 @@ app.get('/Invoice', async (req, res) => {
     console.log("Topic : ",topic);
     if (kieu_yeu_cau === 'lessonlist') {
         try {
-            query_string = "SELECT user_id,lesson_id,lesson_title,lesson_no,submit_date FROM speaking_lessons ORDER BY lesson_title;"
+            query_string = `SELECT user_id,lesson_id,lesson_title,lesson_no,submit_date FROM speaking_lessons WHERE lesson_title LIKE '%${topic}%' ORDER BY lesson_title;`
             console.log("Câu truy vấn : ", query_string);
             const result = await pool.query(query_string);
             res.json(result.rows);
