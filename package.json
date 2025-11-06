@@ -1,9 +1,9 @@
 {
-  "name": "api-for-learning-english-page",
+  "name": "api-for-defect-position",
   "version": "1.0.0",
-  "main": "learning-english-api.js",
+  "main": "defect-position-api.js",
   "scripts": {
-    "start": "node learning-english-api.js"
+    "start": "node defect-position-api.js"
   },
   "keywords": [],
   "author": "",
