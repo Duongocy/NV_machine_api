@@ -1,9 +1,9 @@
 {
-  "name": "api-for-defect-position",
+  "name": "api-for-nv-machine-maintenance",
   "version": "1.0.0",
-  "main": "defect-position-api.js",
+  "main": "nv_machine_maintenance_api.js",
   "scripts": {
-    "start": "node defect-position-api.js"
+    "start": "node nv_machine_maintenance_api.js"
   },
   "keywords": [],
   "author": "",
