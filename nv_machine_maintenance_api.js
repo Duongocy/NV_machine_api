@@ -328,6 +328,43 @@ app.post('/maintenance-schedule', async (req, res) => {
 });
 /////////////////////////////////////////////////////////////////////////
 
+//Phần xử lý check danh sách máy
+app.post('/machine-list', async (req, res) => {    
+    console.log("Có yêu cầu kiểm tra danh sách máy");//báo có yêu cầu lưu sự kiện mới từ client
+    const authHeader = req.headers['authorization'];
+    const token = authHeader?.split(' ')[1];//lấy nôi dung token
+    
+    if (!token) return res.sendStatus(401); //nếu không có token thì thoát luôn không thực hiện đoạn sau 
+    else {//nếu có token thì tiếp tục xác thực token có đúng ko
+        tokenlib.verify(token, 'DuoNgocY', async function(err, user) {
+        // xác thực token
+        if (err) {
+            return res.sendStatus(403); 
+            // nếu token bị lỗi hoặc hết hạn cũng thoát luôn không thực hiện đoạn dưới
+        }
+        else {
+            //thực hiện công việc cần khi đã xác thực token ok 
+            console.log("Đã xác thực yêu token thành công");
+            try {
+            const queryText = `SELECT machine_id, machine_name, installation_area 
+                FROM "machine-info"
+                ORDER BY machine_id ASC;           
+                `;
+
+            const result = await pool.query(queryText);
+            const allMachines = result.rows;
+            res.status(200).json(allMachines);
+
+        } catch (err) {
+            console.error(err);
+            res.status(500).send("Lỗi khi lấy danh sách máy");
+        }
+        }
+    });      
+    } 
+});
+/////////////////////////////////////////////////////////////////////////
+
 //1 luồng đơn giản để nhận tín hiệu ping giữ api trên render luôn thức
 app.get('/ping', (req, res) => {
   res.send('pong!');
