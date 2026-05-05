@@ -347,7 +347,7 @@ app.post('/machine-list', async (req, res) => {
             console.log("Đã xác thực yêu token thành công");
             try {
             const queryText = `SELECT machine_id, machine_name, installation_area 
-                FROM "machine-info"
+                FROM "machine_info"
                 ORDER BY machine_id ASC;           
                 `;
 
